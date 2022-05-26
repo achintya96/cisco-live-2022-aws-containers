@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Python Flask Simple Shopping Cart</title>
+	<link href="{{ url_for('static', filename='css/shop-style.css') }}" rel="stylesheet" type="text/css" />
+	<!-- basic -->
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- mobile metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
+	<!-- site metas -->
+	<title>Ruisoft</title>
+	<!-- bootstrap css -->
+	<link rel="stylesheet" href="static/css/bootstrap.min.css">
+	<!-- style css -->
+	<link rel="stylesheet" href="static/css/style.css">
+	<!-- Responsive-->
+	<link rel="stylesheet" href="static/css/responsive.css">
+</head>
+<body class="main-layout">
+	<!-- header -->
+	<header>
+		<!-- header inner -->
+		<div class="header">
+		   <div class="container-fluid">
+			  <div class="row">
+				 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+					<div class="full">
+					   <div class="center-desk">
+						  <div class="title">
+							 <a href="/">ruisoft</a>
+						  </div>
+					   </div>
+					</div>
+				 </div>
+				 <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+					<nav class="navigation navbar navbar-expand-md navbar-dark ">
+					   <div class="collapse navbar-collapse" id="navbarsExample04">
+						  <ul class="navbar-nav mr-auto">
+							 <li class="nav-item">
+								<a class="nav-link" href="/#about">About</a>
+							 </li>
+							 <li class="nav-item">
+								<a class="nav-link" href="shop">Shop</a>
+							 </li>
+							 <li class="nav-item">
+								<a class="nav-link" href="/#contact">Contact</a>
+							 </li>
+						  </ul>
+					   </div>
+					</nav>
+				 </div>
+			  </div>
+		   </div>
+		</div>
+		</div>
+	 </header>
+	 <!-- end header inner -->
+	 <!-- end header -->
+    <div id="shopping-cart">
+		<div class="txt-heading">Shopping Cart</div>		
+		{% if 'cart_item' in session %}
+			<table class="tbl-cart" cellpadding="10" cellspacing="1">
+			<tbody>
+				<tr>
+					<th style="text-align:left;">Name</th>
+					<th style="text-align:right;" width="10%">Quantity</th>
+					<th style="text-align:right;" width="10%">Unit Price</th>
+					<th style="text-align:right;" width="10%">Price</th>
+					<th style="text-align:center;" width="5%">Remove</th>
+				</tr>
+				{% for key, val in session['cart_item'].items() %}
+					{% set price = session['cart_item'][key]['price'] %}				
+					<tr>
+						<td>{{ session['cart_item'][key]['name'] }}</td>
+						<td  style="text-align:right;">{{ session['cart_item'][key]['quantity'] }}</td>
+                        <td  style="text-align:right;">&#36; {{ session['cart_item'][key]['unit_price'] }}</td>
+                        <td  style="text-align:right;">&#36; {{ price }}</td>
+
+						<td style="text-align:center;">
+							<a href="{{ url_for('.delete_product', code=session['cart_item'][key]['code']) }}" class="btnRemoveAction">
+								Remove Item
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+				<tr>
+					<td align="left">Total:</td>
+					<td align="right"><strong>Quantity: {{ session['all_total_quantity'] }}</strong></td>
+                    <td align="right"><strong>Price &#36; {{ session['all_total_price'] }}</strong></td>
+					<td></td>
+				</tr>
+				<a id="btnEmpty" href="{{ url_for('.empty_cart') }}">Empty Cart</a>
+			</tbody>
+			</table>
+		{% else: %}
+			<div class="no-records">Your Cart is Empty</div>
+		{% endif %}
+	</div>
+
+	<div id="product-grid">
+		<div class="txt-heading">Products</div>
+
+		{% for product in products %}
+
+			<div class="product-item">
+				<form method="post" action="/shop/add">
+					<div class="product-tile-footer">
+						<div class="product-title">{{ product.name }}</div>
+                        <div class="product-misc">{{ product.manufacturer }}</div>
+                        <div class="product-misc">Type: {{ product.type }}</div>
+                        <div class="product-misc">Condition: {{ product.condition }}</div>
+                        <div class="product-misc">{{ product.rack_units }}RU</div>
+						<div class="product-price">&#36; {{ product.price }}</div>
+						<div class="cart-action">
+							<input type="hidden" name="code" value="{{ product.code }}"/>
+							<input type="submit" value="Add to Cart" class="btnAddAction" />
+						</div>
+					</div>
+				</form>
+			</div>
+
+		{% endfor %}
+	
+	</div>
+</body>
+</html>

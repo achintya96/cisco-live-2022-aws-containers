@@ -1,0 +1,25 @@
+{
+    "folders": [
+        {
+            "path": "../Python"
+        },
+        {
+            "path": "../ACI VVP"
+        },
+        {
+            "path": "."
+        },
+        {
+            "path": "../Ansible"
+        },
+        {
+            "path": "../Terraform"
+        },
+        {
+            "path": "../FlaskMongo"
+        },
+        {
+            "path": "../CiscoLiveTests"
+        }
+    ]
+}
