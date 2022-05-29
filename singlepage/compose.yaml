@@ -1,3 +1,4 @@
+version: '3'
 services:
   ciscolive-singlepage-compose:
     image: sabaroof/ciscolive2022:singlepage
