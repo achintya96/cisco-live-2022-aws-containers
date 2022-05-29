@@ -9,9 +9,6 @@ services:
     command: /bin/bash -c "envsubst < /tmp/nginx.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'" 
     ports:
       - 80:80
-    extra_hosts:
-      - "backend:20.0.2.2"
-      - "mongo:20.0.3.2"
     depends_on:
       - backend
     networks: 
@@ -25,9 +22,6 @@ services:
       - ./flask:/src
     depends_on:
       - mongo
-    extra_hosts:
-      - "web:20.0.1.2"
-      - "mongo:20.0.3.2"
     networks: 
       backend:
         ipv4_address: 20.0.2.2
@@ -35,9 +29,6 @@ services:
     image: mongo
     volumes:
       - ./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
-    extra_hosts:
-      - "backend:20.0.2.2"
-      - "web:20.0.1.2"
     networks: 
       db:
         ipv4_address: 20.0.3.2
