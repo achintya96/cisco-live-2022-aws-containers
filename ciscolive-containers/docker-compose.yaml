@@ -12,8 +12,7 @@ services:
     depends_on:
       - backend
     networks: 
-      frontend:
-        ipv4_address: 20.0.1.2
+      - frontend
   backend:
     image: sabaroof/ciscolive2022:backend
     environment: 
@@ -23,15 +22,13 @@ services:
     depends_on:
       - mongo
     networks: 
-      backend:
-        ipv4_address: 20.0.2.2
+      - backend
   mongo:
     image: mongo
     volumes:
       - ./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
     networks: 
-      db:
-        ipv4_address: 20.0.3.2
+      - db
 
 networks:
   frontend:
