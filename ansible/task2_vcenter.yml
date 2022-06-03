@@ -1,0 +1,32 @@
+- name: Playbook for VC
+  hosts: vcenter
+  gather_facts: no
+  vars_files: inventory.yml
+  connection: httpapi
+
+  tasks:
+
+    - name: Apply the backend portgroup
+      community.vmware.vmware_guest_network:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        name: CLUS_User01_VM
+        mac_address: 00:50:56:ad:df:10
+        network_name: "clus_user_01|clus_user01_app_profile|EPG_backend"
+        state: present
+        validate_certs: no
+
+    - name: Apply the DB portgroup
+      community.vmware.vmware_guest_network:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ vcenter_datacenter }}"
+        name: CLUS_User01_VM
+        mac_address: 00:50:56:ad:32:25
+        network_name: "clus_user_01|clus_user01_app_profile|EPG_db"
+        state: present
+        validate_certs: no
+

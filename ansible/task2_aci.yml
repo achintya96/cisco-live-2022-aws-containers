@@ -1,0 +1,107 @@
+- name: Test playbook for Task1
+  hosts: apic1
+  gather_facts: no
+  vars_files: inventory.yml
+  connection: httpapi
+
+  tasks:
+
+    - name: Create BDs for the backend and database tiers
+      cisco.aci.aci_bd:
+        host: '{{ ansible_host }}'
+        username: '{{ ansible_username }}'
+        password: '{{ ansible_pass }}'
+        tenant: '{{ ansible_tenant }}'
+        vrf: 'CLUS_VRF'
+        bd: 'BD_{{item}}'
+        validate_certs: no
+        state: present  
+      loop: '{{ ["backend_test", "db_test"] }}'
+
+    - name: Create backend subnet
+      cisco.aci.aci_bd_subnet:
+        host: '{{ ansible_host }}'
+        username: '{{ ansible_username }}'
+        password: '{{ ansible_pass }}'
+        tenant: '{{ ansible_tenant }}'
+        bd: BD_backend_test
+        subnet_name: backend_subnet
+        gateway: 30.0.0.1
+        mask: 24
+        validate_certs: no
+        state: present
+
+    - name: Create db subnet
+      cisco.aci.aci_bd_subnet:
+        host: '{{ ansible_host }}'
+        username: '{{ ansible_username }}'
+        password: '{{ ansible_pass }}'
+        tenant: '{{ ansible_tenant }}'
+        bd: BD_db_test
+        subnet_name: db_subnet
+        gateway: 30.0.1.1
+        mask: 24
+        validate_certs: no
+        state: present
+
+    - name: Create ap
+      cisco.aci.aci_ap:
+        host: '{{ ansible_host }}'
+        username: '{{ ansible_username }}'
+        password: '{{ ansible_pass }}'
+        tenant: '{{ ansible_tenant }}'
+        ap: clus_user01_app_profile
+        validate_certs: no
+        state: present  
+
+
+    - name: Create backend EPG
+      cisco.aci.aci_epg:
+        host: '{{ ansible_host }}'
+        username: '{{ ansible_username }}'
+        password: '{{ ansible_pass }}'
+        tenant: '{{ ansible_tenant }}'
+        bd: BD_backend_test
+        ap: clus_user01_app_profile
+        epg: EPG_backend_test_EPG
+        validate_certs: no
+        state: present  
+
+    - name: Create database EPG
+      cisco.aci.aci_epg:
+        host: '{{ ansible_host }}'
+        username: '{{ ansible_username }}'
+        password: '{{ ansible_pass }}'
+        tenant: '{{ ansible_tenant }}'
+        bd: BD_db_test
+        ap: clus_user01_app_profile
+        epg: EPG_db_test_EPG
+        validate_certs: no
+        state: present  
+
+    - name: Attach the VMM domain to the created EPGs
+      cisco.aci.aci_epg_to_domain:
+        host: '{{ ansible_host }}'
+        username: '{{ ansible_username }}'
+        password: '{{ ansible_pass }}'
+        tenant: '{{ ansible_tenant }}'
+        ap: clus_user01_app_profile
+        epg: '{{item}}'
+        domain: nyc-dvs
+        domain_type: vmm
+        vm_provider: vmware
+        enhanced_lag_policy: nyc-lag
+        validate_certs: no
+      loop: '{{ ["EPG_backend_test_EPG", "EPG_db_test_EPG"] }}'
+
+
+  #  - name: Change the portgroups in vCenter 
+  #    community.vmware.vmware_guest_network:
+  #      hostname: '{{ vcenter_host }}'
+  #      username: '{{ vcenter_user }}'
+  #      password: '{{ vcenter_pass }}'
+  #      datacenter: '{{ vcenter_datacenter }}'
+  #      name: vm01.domain.fake
+  #      mac_address: 00:50:56:11:22:33
+  #      network_name: admin-network
+  #      state: present

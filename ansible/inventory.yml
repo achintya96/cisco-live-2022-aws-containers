@@ -1,0 +1,18 @@
+all:
+  hosts:
+    apic1:
+      ansible_host: 198.19.202.66
+      ansible_username: CLUS-user01
+      ansible_pass: CLUS-user01-123!
+      ansible_tenant: CLUS-user01
+
+    vcenter1:
+      vcenter_hostname: 198.19.202.251
+      vcenter_username: msabadac@vsphere.local
+      vcenter_password: ob$S9Qfr
+      vcenter_datacenter: NYC
+
+    ndo:
+      mso_host: 198.19.202.12
+      username: CLUS-user01
+      password: CLUS-user01-123!
