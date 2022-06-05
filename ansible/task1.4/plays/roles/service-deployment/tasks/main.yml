@@ -1,0 +1,41 @@
+- name: Apply the frontend portgroup to the production VM
+  community.vmware.vmware_guest_network:
+    hostname: '{{ vc_host }}'
+    username: '{{ vc_creds.user }}'
+    password: '{{ vc_creds.pass }}'
+    datacenter: '{{ vc_datacenter }}'
+    name: '{{ vc_prodvm }}'
+    mac_address: '{{ vc_prodvm_mac }}'
+    network_name: '{{ vc_pg }}'
+    state: present
+    validate_certs: no
+
+- name: Apply the frontend portgroup to the test VM
+  community.vmware.vmware_guest_network:
+    hostname: "{{ vc_host }}"
+    username: '{{ vc_creds.user }}'
+    password: '{{ vc_creds.pass }}'
+    datacenter: "{{ vc_datacenter }}"
+    name: '{{ vc_testvm }}'
+    mac_address: '{{ vc_testvm_mac }}'
+    network_name: '{{ vc_pg }}'
+    state: present
+    validate_certs: no
+
+- name: Pull an image
+  community.docker.docker_image:
+    name: sabaroof/ciscolive2022:singlepage
+    source: pull
+    docker_host: tcp://198.19.202.5:2375
+    validate_certs: no
+
+- name: Run the container
+  community.docker.docker_container:
+    name: singlepage
+    image: sabaroof/ciscolive2022:singlepage
+    state: started
+    command: ["nginx", "-g", "'daemon off;'"]
+    ports:
+      - "80:80"
+    docker_host: tcp://198.19.202.5:2375
+    validate_certs: no

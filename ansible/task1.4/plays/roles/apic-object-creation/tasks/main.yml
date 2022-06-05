@@ -1,0 +1,59 @@
+- name: Create a BD for the frontend tier
+  cisco.aci.aci_bd:
+    host: '{{ apic_host }}'
+    username: '{{ apic_creds.user }}'
+    password: '{{ apic_creds.pass }}'
+    tenant: '{{ apic_tenant }}'
+    vrf: '{{ apic_vrf }}'
+    bd: '{{ apic_bd }}'
+    validate_certs: no
+    state: present
+
+- name: Create frontend subnet
+  cisco.aci.aci_bd_subnet:
+    host: '{{ apic_host }}'
+    username: '{{ apic_creds.user }}'
+    password: '{{ apic_creds.pass }}'
+    tenant: '{{ apic_tenant }}'
+    bd: '{{ apic_bd }}'
+    subnet_name: '{{ apic_bd_subnet_name }}'
+    gateway: '{{ apic_bd_gw }}'
+    mask: '{{ apic_bd_gw_mask }}'
+    validate_certs: no
+    state: present
+
+- name: Create an AP
+  cisco.aci.aci_ap:
+    host: '{{ apic_host }}'
+    username: '{{ apic_creds.user }}'
+    password: '{{ apic_creds.pass }}'
+    tenant: '{{ apic_tenant }}'
+    ap: '{{ apic_ap }}'
+    validate_certs: no
+    state: present  
+
+- name: Create frontend EPG
+  cisco.aci.aci_epg:
+    host: '{{ apic_host }}'
+    username: '{{ apic_creds.user }}'
+    password: '{{ apic_creds.pass }}'
+    tenant: '{{ apic_tenant }}'
+    bd: '{{ apic_bd }}'
+    ap: '{{ apic_ap }}'
+    epg: '{{ apic_epg }}'
+    validate_certs: no
+    state: present  
+
+- name: Attach the VMM domain to the created EPGs
+  cisco.aci.aci_epg_to_domain:
+    host: '{{ apic_host }}'
+    username: '{{ apic_creds.user }}'
+    password: '{{ apic_creds.pass }}'
+    tenant: '{{ apic_tenant }}'
+    ap: '{{ apic_ap }}'
+    epg: '{{ apic_epg }}'
+    domain: '{{ apic_vmm }}'
+    domain_type: vmm
+    vm_provider: vmware
+    enhanced_lag_policy: '{{ apic_lag }}'
+    validate_certs: no

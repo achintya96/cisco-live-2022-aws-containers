@@ -1,0 +1,7 @@
+- name: Creating the logical constructs necessary to attach an endpoint
+  hosts: apic
+  gather_facts: false
+  connection: httpapi
+
+  roles:
+    - apic-object-creation
