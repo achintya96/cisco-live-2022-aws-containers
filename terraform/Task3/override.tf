@@ -9,9 +9,9 @@ variable "awsstuff" {
     aws_secret_key    = string
   })
   default = {
-    aws_account_id    = "637583011518"
-    aws_access_key_id = "AKIAZI4XIV27FMS74GG6"
-    aws_secret_key    = "Iv3vAWssSjgyU/h5TDFdGc9RlaRhe7rHY8KkWlV1"
+    aws_account_id    = "000000000000000000"                         #Enter Aws Account ID for your tenant account 
+    aws_access_key_id = "0000000000000000000"                        #Enter Acccess Key ID for your tenant account 
+    aws_secret_key    = "0000000000000000000000000000000000000000"   #Enter Secret Key for your tenant account 
   }
 }
 
@@ -21,10 +21,8 @@ variable "awsstuff" {
 variable "creds" {
   type = map(any)
   default = {
-    username = "admin"
-    password = "C1sco12345!"
-    url      = "https://198.19.202.12/"
-#    domain   = "put_in_auth_domain_defined_in_ND" # if you are using local user, comment this out.  
-                                                  # Make sure to also comment out in variables.tf file.
+    username = "admin"              
+    password = "000000000000000000"  # Insert admin password for NDO 
+    url      = "https://0.0.0.0/"    #Insert NDO IP
   }
 }
