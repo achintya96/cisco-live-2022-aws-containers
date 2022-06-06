@@ -1,7 +1,0 @@
-all:
-  hosts:
-    apic1:
-      apic_host: 198.19.202.66
-      apic_username: CLUS-user01
-      apic_pass: CLUS-user01-123!
-      apic_tenant: CLUS-user01

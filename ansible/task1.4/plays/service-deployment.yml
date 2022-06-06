@@ -1,7 +1,0 @@
-- name: Attaching the endpoints to correct portgroups and launching the container
-  hosts: vcenter
-  gather_facts: false
-  connection: httpapi
-
-  roles:
-    - service-deployment
