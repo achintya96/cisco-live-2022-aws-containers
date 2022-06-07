@@ -7,6 +7,4 @@ services:
     extra_hosts:
       - "backend:150.0.2.2"
       - "web:150.0.1.2"
-    networks: 
-      db:
-        ipv4_address: 150.0.3.2
+
