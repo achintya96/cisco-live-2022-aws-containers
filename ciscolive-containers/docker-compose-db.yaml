@@ -5,6 +5,6 @@ services:
     volumes:
       - ./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
     extra_hosts:
-      - "backend:150.0.2.2"
-      - "web:150.0.1.2"
+      - "backend:150.0.2.5"
+      - "web:150.0.1.5"
 
