@@ -9,6 +9,4 @@ services:
     extra_hosts:
       - "web:150.0.1.2"
       - "mongo:150.0.3.2"
-    networks: 
-      backend:
-        ipv4_address: 150.0.2.2
+
