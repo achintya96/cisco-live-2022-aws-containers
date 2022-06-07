@@ -12,8 +12,6 @@ services:
     extra_hosts:
       - "backend:150.0.2.5"
       - "mongo:150.0.3.5"
-    depends_on:
-      - backend
     networks: 
       frontend:
         ipv4_address: 150.0.1.5
