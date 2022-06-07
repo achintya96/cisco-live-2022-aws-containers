@@ -7,6 +7,6 @@ services:
     volumes:
       - ./flask:/src
     extra_hosts:
-      - "web:150.0.1.2"
-      - "mongo:150.0.3.2"
+      - "web:150.0.1.5"
+      - "mongo:150.0.3.5"
 
