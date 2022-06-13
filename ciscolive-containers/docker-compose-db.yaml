@@ -2,6 +2,8 @@ version: '3'
 services:
   mongo:
     image: mongo
+    ports:
+      - "27017:27017"
     volumes:
       - ./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro
     extra_hosts:
